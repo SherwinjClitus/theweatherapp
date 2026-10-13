@@ -27,18 +27,6 @@ This project allows users to search for a city and retrieve the current weather 
 - Interactive holographic weather card.
 - API key configuration through an environment variable.
 
-## Screenshots
-
-Add screenshots to the `public/` folder and replace the placeholders below with real images for your portfolio.
-
-- Search view and weather results:
-  ![Weather app search](./public/screenshot-1.png)
-
-- Mobile layout:
-  ![Weather app mobile](./public/screenshot-2.png)
-
-> Replace the placeholder image paths above with actual screenshots stored in `public/` before publishing the project.
-
 ## Tech Stack
 
 - React
