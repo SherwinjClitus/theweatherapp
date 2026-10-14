@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import "./App.css";
 import { useState } from "react";
@@ -8,12 +7,19 @@ import MicroSlats from "./component/MicroSlats";
 function App() {
   const [city, setcity] = useState("");
   const [weather, setweather] = useState("");
+  const [error, seterror] = useState("");
 
   function handleCity(event) {
     setcity(event.target.value);
   }
 
   function getWeather() {
+    if (!city.trim()) {
+      seterror("Please enter a valid city name");
+      return;
+    }
+
+    seterror("");
     const data = axios(
       `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}&units=metric`,
     );
@@ -26,6 +32,7 @@ function App() {
       .catch(function (errmsg) {
         console.log(errmsg);
         console.log("Failed to Get");
+        seterror("Please enter a valid city name");
       });
   }
 
@@ -60,27 +67,32 @@ function App() {
         </header>
 
         {/* City search */}
-        <div className="flex w-full max-w-xl flex-col gap-3 sm:flex-row sm:items-center">
-          <input
-            type="text"
-            value={city}
-            placeholder="Enter a city or a place"
-            className="w-full min-w-0 flex-1 rounded-xl border border-slate-700 bg-white px-4 py-3 text-black placeholder:text-gray-500 outline-none transition focus:border-purple-500 "
-            onChange={handleCity}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                getWeather();
-              }
-            }}
-          />
+        <div className="w-full max-w-xl">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <input
+              type="text"
+              value={city}
+              placeholder="Enter a city or a place"
+              className="w-full min-w-0 flex-1 rounded-xl border border-slate-700 bg-white px-4 py-3 text-black placeholder:text-gray-500 outline-none transition focus:border-purple-500"
+              onChange={handleCity}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  getWeather();
+                }
+              }}
+            />
 
-          <button
-            type="button"
-            className="shrink-0 rounded-xl bg-black px-6 py-3 text-white transition hover:text-amber-300 hover:cursor-pointer"
-            onClick={getWeather}
-          >
-            Get report
-          </button>
+            <button
+              type="button"
+              className="shrink-0 rounded-xl bg-black px-6 py-3 text-white transition hover:text-amber-300 hover:cursor-pointer"
+              onClick={getWeather}
+            >
+              Get report
+            </button>
+          </div>
+
+          {/* Error message below the input and button */}
+          {error && <p className="ml-2 mt-2 text-sm text-white">{error}</p>}
         </div>
 
         {/* Weather report */}
@@ -104,13 +116,9 @@ function App() {
                     {Math.round(weather.main.temp)}°C
                   </h3>
 
-                  <p className="capitalize">
-                    {weather.weather[0].description}
-                  </p>
+                  <p className="capitalize">{weather.weather[0].description}</p>
 
-                  <p>
-                    Feels like {Math.round(weather.main.feels_like)}°C
-                  </p>
+                  <p>Feels like {Math.round(weather.main.feels_like)}°C</p>
                 </div>
 
                 {/* Weather details */}
@@ -155,4 +163,3 @@ function App() {
 }
 
 export default App;
-
